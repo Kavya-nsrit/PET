@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Expense Tracker</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Expense Tracker</h2>
+
+    <div class="balance">
+        <h3>Balance: ₹{{ balance }}</h3>
+    </div>
+
+    <div class="inc-exp">
+        <div class="income">
+            Income ₹{{ income }}
+        </div>
+        <div class="expense">
+            Expense ₹{{ expense }}
+        </div>
+    </div>
+
+    <h3>Transactions</h3>
+    <ul>
+        {% for t in txs %}
+        <li>
+            {{ t.text }}
+            <span>
+                {% if t.amount > 0 %}
+                    +₹{{ t.amount }}
+                {% else %}
+                    ₹{{ t.amount }}
+                {% endif %}
+            </span>
+            <a href="/delete/{{ loop.index0 }}">
+                <button class="btn">x</button>
+            </a>
+        </li>
+        {% else %}
+        <p>No transactions</p>
+        {% endfor %}
+    </ul>
+
+    <h3>Add Transaction</h3>
+    <form action="/add" method="POST">
+        <input type="text" name="text" placeholder="Enter description" required>
+        <input type="number" name="amount" placeholder="Enter amount (+income, -expense)" required>
+        <button type="submit">Add</button>
+    </form>
+</div>
+
+</body>
+</html>
